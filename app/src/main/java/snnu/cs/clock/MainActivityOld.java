@@ -7,36 +7,27 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AppCompatActivity;
+// import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
+public class MainActivityOld extends AppCompatActivity
 {
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private Class<?> mClss;
 
-    private ImageView scanImg;
-
     @Override
     public void onCreate(Bundle state) {
         super.onCreate(state);
-        setContentView(R.layout.activity_main);
-        scanImg = findViewById(R.id.img_scan);
-        scanImg.setOnClickListener(this);
+        setContentView(R.layout.activity_main_old);
+        // setupToolbar();
     }
 
-    @Override
-    public void onClick(View v)
-    {
-        switch (v.getId())
-        {
-            case R.id.img_scan:
-                launchFullFragmentActivity(v);
-                break;
-        }
-    }
+    // public void setupToolbar() {
+    //     Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    //     setSupportActionBar(toolbar);
+    // }
 
     public void launchSimpleActivity(View v) {
         launchActivity(SimpleScannerActivity.class);
