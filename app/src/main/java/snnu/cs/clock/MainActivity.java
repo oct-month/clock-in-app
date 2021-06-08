@@ -12,12 +12,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import snnu.cs.clock.utils.LocalStorage;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private Class<?> mClss;
 
+    private static final String SCHOOL_KEY = "schoolCode";
     private ImageView scanImg;
+    private LocalStorage storage;
 
     @Override
     public void onCreate(Bundle state) {
@@ -25,6 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         scanImg = findViewById(R.id.img_scan);
         scanImg.setOnClickListener(this);
+        storage = new LocalStorage(this);
+        if (storage.get(SCHOOL_KEY).trim().length() <= 0)
+        {
+            // TODO 未登录，跳转到登录页面
+        }
     }
 
     @Override

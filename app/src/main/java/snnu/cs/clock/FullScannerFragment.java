@@ -16,13 +16,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.Result;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import snnu.cs.clock.entity.MyResponse;
+import snnu.cs.clock.entity.Student;
+import snnu.cs.clock.utils.HttpUtils;
+import snnu.cs.clock.utils.LocalStorage;
 
 public class FullScannerFragment extends Fragment implements MessageDialogFragment.MessageDialogListener,
         ZXingScannerView.ResultHandler, FormatSelectorDialogFragment.FormatSelectorDialogListener,
@@ -142,6 +153,32 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         outState.putInt(CAMERA_ID, mCameraId);
     }
 
+    private void addRecord(String qrCode)
+    {
+        String schoolCode = new LocalStorage(getActivity()).get("schoolCode");
+        Student student = new Student(schoolCode, null, null);
+        new HttpUtils().post("/api/record/add", qrCode, student, new Callback()
+        {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e)
+            {
+                // TODO
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException
+            {
+                String res = response.body().string();
+                MyResponse myResponse = new Gson().fromJson(res, MyResponse.class);
+                if (myResponse.getStatus().equals("success"))
+                {
+
+                }
+                // TODO
+            }
+        });
+    }
+
     @Override
     public void handleResult(Result rawResult) {
         try {
@@ -151,6 +188,8 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         } catch (Exception e) {}
         // TODO 处理获取二维码后
         String code = rawResult.getText();
+        addRecord(code);
+
         showMessageDialog("Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
     }
 
