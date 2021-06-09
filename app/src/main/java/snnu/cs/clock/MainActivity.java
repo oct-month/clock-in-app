@@ -19,7 +19,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int ZXING_CAMERA_PERMISSION = 1;
     private Class<?> mClss;
 
-    private static final String SCHOOL_KEY = "schoolCode";
     private ImageView scanImg;
     private LocalStorage storage;
 
@@ -30,9 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         scanImg = findViewById(R.id.img_scan);
         scanImg.setOnClickListener(this);
         storage = new LocalStorage(this);
-        if (storage.get(SCHOOL_KEY).trim().length() <= 0)
+        if (storage.get(Config.SCHOOL_KEY).trim().length() <= 0)
         {
-            // TODO 未登录，跳转到登录页面
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 

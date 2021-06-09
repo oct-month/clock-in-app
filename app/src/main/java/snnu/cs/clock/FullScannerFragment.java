@@ -1,5 +1,6 @@
 package snnu.cs.clock;
 
+import android.content.DialogInterface;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -9,12 +10,16 @@ import androidx.core.view.MenuItemCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.zxing.BarcodeFormat;
@@ -162,7 +167,7 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                // TODO
+                Toast.makeText(getActivity(), Config.HTTP_FAIL, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -170,11 +175,15 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
             {
                 String res = response.body().string();
                 MyResponse myResponse = new Gson().fromJson(res, MyResponse.class);
-                if (myResponse.getStatus().equals("success"))
+                // 提交成功
+                if (myResponse.getStatus().equals(Config.SUCCESS))
                 {
-
+                    showMessageDialog(myResponse.getMsg());
                 }
-                // TODO
+                else
+                {
+                    Toast.makeText(getActivity(), myResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -189,8 +198,6 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
         // TODO 处理获取二维码后
         String code = rawResult.getText();
         addRecord(code);
-
-        showMessageDialog("Contents = " + rawResult.getText() + ", Format = " + rawResult.getBarcodeFormat().toString());
     }
 
     public void showMessageDialog(String message) {
@@ -216,8 +223,10 @@ public class FullScannerFragment extends Fragment implements MessageDialogFragme
 
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
+        mScannerView.stopCamera();
+        getActivity().finish();
         // Resume the camera
-        mScannerView.resumeCameraPreview(this);
+        // mScannerView.resumeCameraPreview(this);
     }
 
     @Override

@@ -2,10 +2,12 @@ package snnu.cs.clock;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -48,7 +50,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                // TODO
+                Toast.makeText(RegisterActivity.this, Config.HTTP_FAIL, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -56,7 +58,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             {
                 String res = response.body().string();
                 MyResponse myResponse = new Gson().fromJson(res, MyResponse.class);
-                // TODO
+                Toast.makeText(RegisterActivity.this, myResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                // 注册成功，跳转到登录页
+                if (myResponse.getStatus().equals(Config.SUCCESS))
+                {
+                    Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }

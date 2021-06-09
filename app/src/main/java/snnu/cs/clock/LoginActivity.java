@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(@NotNull Call call, @NotNull IOException e)
             {
-                // TODO
+                Toast.makeText(LoginActivity.this, Config.HTTP_FAIL, Toast.LENGTH_SHORT).show();
             }
 
             @Override
@@ -64,11 +65,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             {
                 String res = response.body().string();
                 MyResponse myResponse = new Gson().fromJson(res, MyResponse.class);
-                if (myResponse.getStatus().equals("success"))
+                Toast.makeText(LoginActivity.this, myResponse.getMsg(), Toast.LENGTH_SHORT).show();
+                // 登录成功，跳转到首页
+                if (myResponse.getStatus().equals(Config.SUCCESS))
                 {
-                    storage.set("schoolCode", code);
+                    storage.set(Config.SCHOOL_KEY, code);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-                // TODO
             }
         });
     }

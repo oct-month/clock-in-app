@@ -33,7 +33,7 @@ public class HttpUtils
                 .addHeader("Authorization", token)
                 .build();
         Call call = client.newCall(request);
-        call.enqueue(callback);
+        call.enqueue(new MyCallback(callback));
     }
 
     public void post(String path, Object json, Callback callback)
@@ -45,7 +45,7 @@ public class HttpUtils
                 .post(body)
                 .build();
         Call call = client.newCall(request);
-        call.enqueue(callback);
+        call.enqueue(new MyCallback(callback));
     }
 
     public void get(String path, Callback callback)
@@ -54,6 +54,6 @@ public class HttpUtils
                 .url(BASE_URL + path)
                 .build();
         Call call = client.newCall(request);
-        call.enqueue(callback);
+        call.enqueue(new MyCallback(callback));
     }
 }
