@@ -4,12 +4,26 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:adjustViewBounds="true"
+        android:scaleType="fitStart"
+        android:src="@drawable/logo"
+        />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20sp"
+        />
+
     <EditText
         android:id="@+id/edit_school_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="学号"
+        android:hint="输入学号"
         />
 
     <EditText
@@ -17,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="姓名"
+        android:hint="输入姓名"
         />
 
     <EditText
@@ -25,7 +39,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:hint="班级"
+        android:hint="输入班级"
         />
 
     <Button

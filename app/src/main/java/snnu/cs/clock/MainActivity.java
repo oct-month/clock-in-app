@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import snnu.cs.clock.utils.LocalStorage;
@@ -21,6 +22,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private ImageView scanImg;
     private LocalStorage storage;
+    private TextView textSchoolCode;
 
     @Override
     public void onCreate(Bundle state) {
@@ -28,13 +30,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         setContentView(R.layout.activity_main);
         scanImg = findViewById(R.id.img_scan);
         scanImg.setOnClickListener(this);
+        textSchoolCode = findViewById(R.id.text_school_code);
         storage = new LocalStorage(this);
-        if (storage.get(Config.SCHOOL_KEY).trim().length() <= 0)
+        String schoolCode = storage.get(Config.SCHOOL_KEY).trim();
+        if (schoolCode.length() <= 0)
         {
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
             finish();
         }
+        textSchoolCode.setText(schoolCode);
     }
 
     @Override

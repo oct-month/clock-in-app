@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">clock-in</string>
+    <string name="app_name">自习室打卡</string>
     <string name="scanner_activity">ZXing Scanner - Full Activity</string>
     <string name="scanner_fragment_activity">ZXing Scanner - Full Fragment Activity</string>
     <string name="simple_scanner_activity">ZXing Scanner - Simple Activity</string>
